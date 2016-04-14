@@ -197,12 +197,6 @@ function handleMouseDown( clientX, clientY, ctrlKey ) {
         return;
     }
 
-    if ( ! pressedAtLeastOnce ) {
-        console.log( "AMEM" );
-        fullScreenizeElement( div3DView );
-        pressedAtLeastOnce = true;
-    }
-
     mouseStatus = 1;
 
     mouseCoords.set( ( clientX / window.innerWidth ) * 2 - 1, - ( clientY / window.innerHeight ) * 2 + 1 );
@@ -319,6 +313,11 @@ function onTouchStart( event ) {
 
     if ( event.touches.length !== 1 ) {
         return;
+    }
+
+    if ( ! pressedAtLeastOnce ) {
+        fullScreenizeElement( div3DView );
+        pressedAtLeastOnce = true;
     }
 
     var touch = event.touches[ 0 ];
