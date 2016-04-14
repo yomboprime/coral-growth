@@ -98,6 +98,9 @@ function attachEvents() {
     window.addEventListener( 'mousemove', onMouseMove, false );
     window.addEventListener( 'mouseup', onMouseUp, false );
     window.addEventListener( 'mousewheel', onMouseWheel, false );
+    window.addEventListener( 'touchstart', onTouchStart, false );
+    window.addEventListener( 'touchend', onTouchEnd, false );
+    window.addEventListener( 'touchmove', onTouchMove, false );
 
     window.addEventListener( 'resize', onWindowResize, false );
 
@@ -159,15 +162,21 @@ function onKeyDown( event ) {
 
 function onMouseDown( event ) {
 
+    handleMouseDown( event.clientX, event.clientY, event.ctrlKey );
+
+}
+
+function handleMouseDown( clientX, clientY, ctrlKey ) {
+
     mouseStatus = 0;
 
-    if ( event.ctrlKey ) {
+    if ( ctrlKey ) {
         return;
     }
 
     mouseStatus = 1;
 
-    mouseCoords.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+    mouseCoords.set( ( clientX / window.innerWidth ) * 2 - 1, - ( clientY / window.innerHeight ) * 2 + 1 );
     raycaster.setFromCamera( mouseCoords, camera );
     var intersects = this.raycaster.intersectObject( outputMesh );
 
@@ -210,7 +219,13 @@ function onMouseDown( event ) {
 
 function onMouseMove( event ) {
 
-    if ( event.ctrlKey ) {
+    handleMouseMove( event.clientX, event.clientY, event.ctrlKey );
+    
+}
+
+function handleMouseMove( clientX, clientY, ctrlKey ) {
+
+    if ( ctrlKey ) {
         mouseStatus = 0;
         return;
     }
@@ -219,7 +234,7 @@ function onMouseMove( event ) {
         return;
     }
 
-    mouseCoords.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
+    mouseCoords.set( ( clientX / window.innerWidth ) * 2 - 1, - ( clientY / window.innerHeight ) * 2 + 1 );
     raycaster.setFromCamera( mouseCoords, camera );
     line.start.copy( raycaster.ray.origin );
     line.end.copy( raycaster.ray.direction );
@@ -235,7 +250,7 @@ function onMouseMove( event ) {
         ballHelper.position.copy( pointResult );
 
         editMesh();
-        
+
     }
 
 }
@@ -247,6 +262,8 @@ function onMouseUp( event ) {
 }
 
 function onMouseWheel( event ) {
+
+    // The wheel changes influence radius
     
     var delta = 0;
 
@@ -267,6 +284,36 @@ function onMouseWheel( event ) {
     editInfluenceRadius += Math.sign( delta ) * 0.1;
     ballHelper.scale.setScalar( editInfluenceRadius );
     numFramesToShowBallHelper = 30;
+}
+
+function onTouchStart( event ) {
+
+    if ( event.touches.length !== 1 ) {
+        return;
+    }
+
+    var touch = event.touches[ 0 ];
+
+    handleMouseDown( touch.clientX, touch.clientY, false );
+
+}
+
+function onTouchMove( event ) {
+
+    if ( event.touches.length !== 1 ) {
+        return;
+    }
+
+    var touch = event.touches[ 0 ];
+
+    handleMouseMove( touch.clientX, touch.clientY, false );
+
+}
+
+function onTouchEnd( event ) {
+
+    onMouseUp();
+
 }
 
 function createMaterial( color ) {
