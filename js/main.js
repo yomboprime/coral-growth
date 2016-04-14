@@ -22,6 +22,7 @@ var subdividibleMesh = null;
 var outputMesh = null;
 
 var canEdit = true;
+var pressedAtLeastOnce = false;
 var initialCursorPosition = new THREE.Vector3();
 var initialCursorNormal = new THREE.Vector3();
 var currentCursorPosition = new THREE.Vector3();
@@ -122,6 +123,28 @@ function onWindowResize() {
     renderer.setSize( view3DResolutionX, view3DResolutionY );
 }
 
+function fullScreenizeElement( elem ) {
+
+    if ( elem.requestFullscreen ) {
+
+        elem.requestFullscreen();
+
+    } else if ( elem.msRequestFullscreen ) {
+
+        elem.msRequestFullscreen();
+
+    } else if ( elem.mozRequestFullScreen ) {
+
+        elem.mozRequestFullScreen();
+
+    } else if ( elem.webkitRequestFullscreen ) {
+
+        elem.webkitRequestFullscreen();
+
+    }
+
+}
+
 function onKeyDown( event ) {
 
     switch ( event.keyCode ) {
@@ -172,6 +195,12 @@ function handleMouseDown( clientX, clientY, ctrlKey ) {
 
     if ( ctrlKey ) {
         return;
+    }
+
+    if ( ! pressedAtLeastOnce ) {
+        console.log( "AMEM" );
+        fullScreenizeElement( div3DView );
+        pressedAtLeastOnce = true;
     }
 
     mouseStatus = 1;
