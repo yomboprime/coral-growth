@@ -9,7 +9,7 @@ if ( !Detector.webgl ) {
 // Application parameters
 var maxVertices = 120000;
 var maxTriangleSideSize = 0.3;
-var editInfluenceRadius = 0.15 * 3;
+var editInfluenceRadius = 0.4;
 
 // Global variables
 var renderer = null;
@@ -33,6 +33,7 @@ var mouseCoords = new THREE.Vector2();
 var plane = new THREE.Plane();
 var line = new THREE.Line3();
 var ballHelper = null;
+var numFramesToShowBallHelper = 0;
 
 var tempVector1 = new THREE.Vector3();
 var tempVector2 = new THREE.Vector3();
@@ -96,6 +97,7 @@ function attachEvents() {
     window.addEventListener( 'mousedown', onMouseDown, false );
     window.addEventListener( 'mousemove', onMouseMove, false );
     window.addEventListener( 'mouseup', onMouseUp, false );
+    window.addEventListener( 'mousewheel', onMouseWheel, false );
 
     window.addEventListener( 'resize', onWindowResize, false );
 
@@ -242,6 +244,29 @@ function onMouseUp( event ) {
 
     mouseStatus = 0;
 
+}
+
+function onMouseWheel( event ) {
+    
+    var delta = 0;
+
+    if ( event.wheelDelta !== undefined ) {
+
+            // WebKit / Opera / Explorer 9
+
+            delta = event.wheelDelta;
+
+    } else if ( event.detail !== undefined ) {
+
+            // Firefox
+
+            delta = - event.detail;
+
+    }
+
+    editInfluenceRadius += Math.sign( delta ) * 0.1;
+    ballHelper.scale.setScalar( editInfluenceRadius );
+    numFramesToShowBallHelper = 30;
 }
 
 function createMaterial( color ) {
@@ -451,7 +476,11 @@ function run() {
 
 //    growCoral();
 
-    ballHelper.visible = mouseStatus === 1;
+    ballHelper.visible = mouseStatus === 1 || numFramesToShowBallHelper > 0;
+
+    if ( numFramesToShowBallHelper > 0 ) {
+        numFramesToShowBallHelper--;
+    }
 
     renderer.render( scene, camera );
 
