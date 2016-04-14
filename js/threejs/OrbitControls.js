@@ -223,9 +223,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 		scope.domElement.removeEventListener( 'mousewheel', onMouseWheel, false );
 		scope.domElement.removeEventListener( 'MozMousePixelScroll', onMouseWheel, false ); // firefox
 
-		scope.domElement.removeEventListener( 'touchstart', onTouchStart, false );
-		scope.domElement.removeEventListener( 'touchend', onTouchEnd, false );
-		scope.domElement.removeEventListener( 'touchmove', onTouchMove, false );
+//		scope.domElement.removeEventListener( 'touchstart', onTouchStart, false );
+//		scope.domElement.removeEventListener( 'touchend', onTouchEnd, false );
+//		scope.domElement.removeEventListener( 'touchmove', onTouchMove, false );
 
 		document.removeEventListener( 'mousemove', onMouseMove, false );
 		document.removeEventListener( 'mouseup', onMouseUp, false );
@@ -930,9 +930,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 	scope.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
 	scope.domElement.addEventListener( 'MozMousePixelScroll', onMouseWheel, false ); // firefox
 
-	scope.domElement.addEventListener( 'touchstart', onTouchStart, false );
-	scope.domElement.addEventListener( 'touchend', onTouchEnd, false );
-	scope.domElement.addEventListener( 'touchmove', onTouchMove, false );
+//	scope.domElement.addEventListener( 'touchstart', onTouchStart, false );
+//	scope.domElement.addEventListener( 'touchend', onTouchEnd, false );
+//	scope.domElement.addEventListener( 'touchmove', onTouchMove, false );
 
 	window.addEventListener( 'keydown', onKeyDown, false );
 
